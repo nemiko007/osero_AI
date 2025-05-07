@@ -92,10 +92,8 @@ async function getBestMove() {
         boardCopy[row][col] = game.player;
 
         const inputTensor = tf.tensor([boardCopy.flat()], [1, 8, 8, 1], 'float32');
-        interpreter.setInput(inputTensor, 0);
-
+        interpreter.setInput(0, inputTensor);
         interpreter.invoke();
-
         const outputTensor = interpreter.getOutput(0);
         const prediction = await outputTensor.data();
         const score = prediction[0];
@@ -108,10 +106,12 @@ async function getBestMove() {
     return bestMove;
 }
 
-resetBtn.addEventListener('click', async () => {
-    game = new Othello();
-    await updateBoard();
-});
+if (resetBtn) {
+    resetBtn.addEventListener('click', async () => {
+        game = new Othello();
+        await updateBoard();
+    });
+}
 
 async function init() {
     await loadModel();
