@@ -10,7 +10,7 @@ async function loadModel() {
         const response = await fetch('model/model.tflite');
         const buffer = await response.arrayBuffer();
         interpreter = new tflite.TFLite({wasmPaths: ["https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-tflite@1.5.0/dist/tf-tflite.min.js"]});
-        interpreter.loadModel(buffer);
+        await interpreter.loadModel(buffer);
         console.log("Model loaded");
     } catch (e) {
         console.error("Failed to load model", e);
