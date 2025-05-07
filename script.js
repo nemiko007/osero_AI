@@ -7,7 +7,7 @@ let interpreter = null;
 
 async function loadModel() {
     try {
-        const response = await fetch('model/model.tflite');
+        const response = await fetch('/model/model.tflite');
         const buffer = await response.arrayBuffer();
         const tfliteModel = new tflite.TFLite({wasmPaths: ["https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-tflite@1.5.0/dist/tf-tflite.min.js"]});
         interpreter = await tfliteModel.loadModel(buffer);
