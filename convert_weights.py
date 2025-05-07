@@ -1,17 +1,10 @@
-import numpy as np
+import tensorflowjs.converters
 import tensorflow as tf
-from tensorflow.keras.models import load_model
 
-model = load_model('othello_model.h5')
+# Load the Keras model
+model = tf.keras.models.load_model('othello_model.h5')
 
-# Convert the model to JSON format
-model_json = model.to_json()
+# Convert the model to TensorFlow.js format
+tensorflowjs.converters.save_keras_model(model, "model")
 
-# Save the model JSON
-with open("model/model.json", "w") as json_file:
-    json_file.write(model_json)
-
-# Save the weights
-model.save_weights("model/model.weights.h5")
-
-print("Model converted to JSON and weights saved")
+print("Model converted to TensorFlow.js format and saved to model directory")

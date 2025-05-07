@@ -3,11 +3,14 @@ const messageP = document.getElementById('message');
 const resetBtn = document.getElementById('reset');
 
 let game = null;
-let model = null;
+let interpreter = null;
 
 async function loadModel() {
     try {
-        model = await tf.loadLayersModel('model/model.json');
+        const response = await fetch('model/model.tflite');
+        const buffer = await response.arrayBuffer();
+        interpreter = new tflite.Interpreter(buffer);
+        interpreter.allocateTensors();
         console.log("Model loaded");
     } catch (e) {
         console.error("Failed to load model", e);
@@ -88,9 +91,14 @@ async function getBestMove() {
         const boardCopy = game.board.map(row => [...row]);
         boardCopy[row][col] = game.player;
 
-        const tensor = tf.tensor([boardCopy.flat()], [1, 8, 8, 1]);
-        const prediction = model.predict(tensor);
-        const score = prediction.dataSync()[0];
+        const inputTensor = tf.tensor([boardCopy.flat()], [1, 8, 8, 1], 'float32');
+        interpreter.setInput(inputTensor, 0);
+
+        interpreter.invoke();
+
+        const outputTensor = interpreter.getOutput(0);
+        const prediction = await outputTensor.data();
+        const score = prediction[0];
 
         if (score > bestScore) {
             bestScore = score;
