@@ -246,4 +246,4 @@ class Othello {
     }
 }
 
-init();
+window.onload = init;

@@ -7,7 +7,7 @@
     <script>
       window.tflite = {};
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-tflite@1.5.0/dist/tf-tflite.min.js" onload="loadScript()"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-tflite@1.5.0/dist/tf-tflite.min.js"></script>
 </head>
 <body>
     <h1>Othello AI</h1>
@@ -15,12 +15,10 @@
     <p id="message"></p>
     <button id="reset">Reset Game</button>
     <script>
-        function loadScript() {
+        window.onload = async function() {
             const script = document.createElement('script');
             script.src = '/script.js';
             document.body.appendChild(script);
-        }
-        window.onload = async function() {
         };
     </script>
 </body>
