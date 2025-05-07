@@ -3,12 +3,22 @@
 <head>
     <title>Othello AI</title>
     <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.18.0/dist/tf.min.js"></script>
 </head>
 <body>
     <h1>Othello AI</h1>
     <div id="board"></div>
     <p id="message"></p>
     <button id="reset">Reset Game</button>
-    <script src="script.js"></script>
+    <script>
+        window.onload = function() {
+            tf.loadLayersModel('model/model.json').then(function(model) {
+                window.model = model;
+                const script = document.createElement('script');
+                script.src = 'script.js';
+                document.body.appendChild(script);
+            });
+        };
+    </script>
 </body>
 </html>
