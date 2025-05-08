@@ -50,3 +50,7 @@ h1 {
     font-size: 16px;
     cursor: pointer;
 }
+
+.cell.legal-move {
+    color: green;
+}

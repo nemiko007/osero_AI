@@ -35,13 +35,15 @@ function createBoard() {
 function updateBoard() {
     const board = game.board;
     const cells = document.querySelectorAll('.cell');
+    const legalMoves = game.getValidMoves();
+
     cells.forEach(cell => {
         const row = parseInt(cell.dataset.row);
         const col = parseInt(cell.dataset.col);
         const cellValue = board[row][col];
 
         cell.textContent = '';
-        cell.classList.remove('black', 'white');
+        cell.classList.remove('black', 'white', 'legal-move');
 
         if (cellValue === 1) {
             cell.classList.add('black');
@@ -49,6 +51,11 @@ function updateBoard() {
         } else if (cellValue === -1) {
             cell.classList.add('white');
             cell.textContent = '⚪';
+        }
+
+        if (legalMoves.some(move => move.row === row && move.col === col)) {
+            cell.classList.add('legal-move');
+            cell.textContent = '🟢';
         }
     });
 
@@ -63,7 +70,11 @@ async function handleMove(event) {
         game.makeMove(row, col);
         updateBoard();
 
-        if (!game.isGameOver()) {
+        if (game.isGameOver()) {
+            game.player *= -1;
+            game.message = game.player === -1 ? "Your turn" : "AI's turn";
+            updateBoard();
+        } else {
             await aiMove();
         }
     }
