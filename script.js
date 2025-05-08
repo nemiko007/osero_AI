@@ -85,8 +85,11 @@ async function aiMove() {
         const bestMove = await getBestMove();
         if (bestMove) {
             game.makeMove(bestMove.row, bestMove.col);
-            updateBoard();
+        } else {
+            game.player *= -1;
+            game.message = "AI passed. Your turn";
         }
+        updateBoard();
     }
 }
 
